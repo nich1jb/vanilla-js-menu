@@ -1,19 +1,23 @@
-const fakeFetch = new Promise(resolve => {
-    resolve([
-      {id: "0", title: "Title 1", children: []},
-      {id: "1", title: "Title 2", children: [
-        {id: "2", title: "SubTitle 1", children: []},
-        {id: "2", title: "SubTitle 1", children: []}
-      ]}
-    ])
-  })
-
+import fetchData from './page-tree/data.js'
 
 const getData = () => {
-  console.log('here')
-  fakeFetch.then((res) => {
-    console.log(res)
+  return fetchData().then((res) => res)
+}
+
+const createMenuItems = (menu, parent) => {
+  for (let item of menu) {
+    let menuItem = document.createElement('div');
+    menuItem.innerHTML = item.name
+
+    parent.appendChild(menuItem)
+  }
+}
+
+const populateData = () => {
+  fetchData().then(res => {
+    let body = document.querySelector('body');
+    createMenuItems(res, body)
   })
 }
 
-document.getElementById('call-button').addEventListener('click', getData)
+document.addEventListener('DOMContentLoaded', populateData)
